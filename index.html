@@ -1,4 +1,13 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Züri Rumble: 2D-Pixel-Prügelspiel mit 16 Kämpfern in fünf Zürcher Kulissen, für PC und Handy, mit Online-Duell.">
 <title>Züri Rumble</title>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap">
@@ -11,6 +20,7 @@
   --font-pixel: "Press Start 2P", "Courier New", monospace; --font-text: "VT323", "Courier New", monospace;
   color-scheme: dark;
 }
+[hidden] { display: none !important; }
 html, body { height: 100%; }
 html { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-text); font-size: 20px; line-height: 1.2; overflow: hidden; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
@@ -1250,3 +1260,6 @@ if (document.fonts && document.fonts.load) document.fonts.load('8px "Press Start
 resize(); renderSelect(); show('title'); requestAnimationFrame(frame);
 })();
 </script>
+
+</body>
+</html>
