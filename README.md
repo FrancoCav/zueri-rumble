@@ -1,36 +1,36 @@
 # Züri Rumble
 
-2D-Pixel-Prügelspiel im Stil der 90er-Arcade-Fighter, komplett in einer Datei (`index.html`), ohne Build und ohne eigenen Server.
-Läuft am PC (Tastatur) und auf dem Handy (Touch-Pad auf dem Bildschirm).
+Plattform-Prügelspiel im Smash-Stil mit Pixelgrafik: 16 Kämpfer, Waffen aus Kisten, Powerups und fünf Zürcher Kulissen mit Plattformen auf verschiedenen Höhen.
+Läuft im Browser am PC (Tastatur) und auf dem Handy (Touch-Pad, am besten quer halten).
 
 Spielen: https://francocav.github.io/zueri-rumble/
 
-## Inhalt
-- 16 Kämpfer: 7 Männer, 4 Frauen, 5 Monster. Jeder hat vier Techniken und einen hervorgehobenen Special.
-- 5 Kulissen aus Zürich: Grossmünster, Hardbrücke mit Prime Tower, Langstrasse bei Nacht, Bürkliplatz mit Zürisee, Hauptbahnhof.
-- Modi: Arcade (5 CPU-Gegner in Folge, wird pro Sieg schwerer), Duell (2 Spieler an einer Tastatur), Online (2 Handys oder PCs über das Internet).
-- Best of 3 Runden, 60 Sekunden pro Runde, Special-Leiste füllt sich durch Treffer.
-
-## Online-Duell mit zwei Handys
-1. Beide öffnen den Link oben.
-2. Ein Handy tippt «Online», dann «Match eröffnen» und zeigt einen Code mit vier Zeichen.
-3. Das andere Handy tippt den Code ein und drückt «Beitreten».
-4. Beide wählen einen Kämpfer, der Host wählt die Kulisse, dann startet der Kampf.
-
-Technik: Die Browser verbinden sich direkt per WebRTC (PeerJS, Vermittlung über den kostenlosen PeerJS-Cloud-Server).
-Der Host rechnet den Kampf und schickt 30-mal pro Sekunde den Spielstand, der Gast schickt nur seine Tasten.
-Der Gast spürt deshalb die Netzverzögerung als kleine Eingabelatenz. Im claude.ai-Fenster ist WebRTC gesperrt,
-dort laufen nur Arcade und Tastatur-Duell.
+## Regeln
+- Jeder Treffer erhöht die Prozente des Getroffenen. Je höher die Prozente, desto weiter fliegt er.
+- Wer aus dem Bild fliegt oder in den Abgrund fällt, verliert eines von drei Leben. Nach drei Minuten gewinnt, wer mehr Leben hat.
+- Der Special kostet nur einen Teil der Special-Leiste (30 bis 50 %). Die Leiste füllt sich durch Treffer und mit der Zeit.
+- Kisten fallen vom Himmel. Ein Treffer öffnet sie: Katana, Baseballschläger, Shuriken, Laser, Shotgun, Granate oder Bazooka.
+  Die Waffe ersetzt den normalen Schlag, bis die Munition leer ist. Ein harter Treffer schlägt sie aus der Hand.
+- Powerups schweben am Fallschirm herab: Herz (heilt 40 %), Angriff +, Abwehr +, Turbo, Special voll.
+- Schild blockt Schläge, wird dabei kleiner und bricht irgendwann. Würfe und einige Specials gehen durch.
 
 ## Steuerung
-- Spieler 1: A/D laufen, W springen, S ducken, F Schlag, G Tritt, H Special. Im Arcade- und Online-Modus gehen auch Pfeile + J/K/L.
-- Spieler 2 (Tastatur-Duell): Pfeile, K Schlag, L Tritt, Ö Special.
-- Block: nach hinten halten. Tiefe Angriffe (Fegen) nur geduckt blocken. Würfe und einige Specials sind nicht blockbar.
-- Techniken: Schlag, Tief + Schlag, Tritt, Tief + Tritt, in der Luft Schlag oder Tritt = Sprungtritt.
+- Spieler 1: A/D laufen, W springen (in der Luft nochmal = Doppelsprung), S ducken (länger halten = durch Plattform fallen, in der Luft schneller fallen),
+  F Schlag oder Waffe, G Tritt, H Special, R Schild. Im Arcade- und Online-Modus gehen auch Pfeile + J/K/L/I.
+- Spieler 2 (Tastatur-Duell): Pfeile, K Schlag, L Tritt, Ö Special, O Schild.
+- Techniken: Schlag, Runter + Schlag, Tritt, Runter + Tritt. Alle gehen auch in der Luft.
+- Wer weggeschleudert wurde, hat einen zusätzlichen Rettungssprung.
 
-## Grafik
-Alle Figuren und Kulissen werden zur Laufzeit als Pixel-Grafik gezeichnet (Canvas 384 x 216, hochskaliert ohne Glättung).
-Es gibt keine Bilddateien. Figuren sind Papierpuppen aus Kopf, Rumpf und Gliedmassen mit Frisuren, Kleidung und Props.
+## Modi
+- Arcade: fünf CPU-Gegner in Folge, jeder schlauer als der vorige.
+- Duell: zwei Spieler an einer Tastatur.
+- Online: zwei Handys oder PCs. Einer eröffnet ein Match und bekommt einen Code, der andere tippt ihn ein.
+  Verbindung direkt per WebRTC (PeerJS). Der Host rechnet, der Gast schickt nur seine Tasten.
 
-## Hosting
-GitHub Pages aus diesem Repository (Branch `main`, Ordner `/`). Änderungen: `index.html` anpassen, committen, pushen.
+## Kulissen
+Grossmünster (Limmatquai), Hardbrücke, Langstrasse bei Nacht, Bürkliplatz mit fahrendem Dampfschiff, Hauptbahnhof mit durchfahrendem Tram.
+
+## Entwicklung
+Der Quelltext liegt in `src/` (Stylesheet, Markup und nummerierte JS-Teile). `python build.py` setzt daraus die eine Datei `index.html` zusammen,
+die GitHub Pages ausliefert. `python build.py --debug --out=_preview.html` baut eine lokale Testversion mit Test-Haken.
+Der klassische 1-gegen-1-Fighter von vorher ist als Git-Tag `v1-klassisch` gesichert.

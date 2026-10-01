@@ -1,0 +1,77 @@
+<div id="stage">
+  <canvas id="game" width="640" height="360" role="img" aria-label="Kampfszene"></canvas>
+  <button id="hudbtn" type="button" hidden>MENÜ</button>
+  <div id="pad" hidden>
+    <div class="dpad">
+      <button type="button" class="up" data-a="up" aria-label="Springen">▲</button>
+      <button type="button" class="left" data-a="left" aria-label="Links">◀</button>
+      <button type="button" class="right" data-a="right" aria-label="Rechts">▶</button>
+      <button type="button" class="down" data-a="down" aria-label="Ducken">▼</button>
+    </div>
+    <div class="btns">
+      <button type="button" data-a="punch">SCHLAG</button>
+      <button type="button" data-a="kick">TRITT</button>
+      <button type="button" class="bl" data-a="block">SCHILD</button>
+      <button type="button" class="sp" data-a="special">SPECIAL</button>
+    </div>
+  </div>
+
+  <section id="scr-title" class="screen" aria-labelledby="logo">
+    <p class="eyebrow">Plattform-Prügelei in fünf Zürcher Kulissen</p>
+    <h1 id="logo">ZÜRI RUMBLE</h1>
+    <p class="hint rules">Jeder Treffer treibt die Prozente hoch. Je höher sie sind, desto weiter fliegst du. Wer aus dem Bild fliegt, verliert eines von drei Leben. Kisten bringen Waffen, Powerups heilen und verstärken.</p>
+    <div class="row">
+      <button class="btn primary" id="btn-arcade" type="button">ARCADE · 5 GEGNER</button>
+      <button class="btn" id="btn-duel" type="button">DUELL · 2 SPIELER</button>
+      <button class="btn" id="btn-online" type="button">ONLINE · 2 HANDYS</button>
+    </div>
+    <p class="hint">Tastatur: A/D laufen · W springen, in der Luft nochmal für den Doppelsprung · S ducken, länger halten lässt dich durch Plattformen fallen · F Schlag oder Waffe · G Tritt · H Special · R Schild. Pfeile mit J/K/L/I gehen auch.</p>
+    <p class="hint">Duell an einer Tastatur: Spieler 1 WASD + F/G/H/R · Spieler 2 Pfeile + K/L/Ö/O</p>
+    <p class="hint">Online: ein Handy eröffnet ein Match und bekommt einen Code, das andere tippt ihn ein. Am Handy quer halten.</p>
+    <div class="row">
+      <label class="toggle"><input type="checkbox" id="chk-pad"> Touch-Steuerung</label>
+      <label class="toggle"><input type="checkbox" id="chk-sound" checked> Ton</label>
+    </div>
+  </section>
+
+  <section id="scr-online" class="screen" hidden>
+    <h2>ONLINE-DUELL · ZWEI HANDYS</h2>
+    <p class="hint">Ein Handy eröffnet das Match und bekommt einen Code, das andere tippt den Code ein. Beide brauchen nur diesen Link, kein Konto. Der Host rechnet den Kampf, der Gast schickt seine Tasten.</p>
+    <div class="row" id="online-actions">
+      <button class="btn primary" id="btn-host" type="button">MATCH ERÖFFNEN</button>
+      <form id="join-form" autocomplete="off">
+        <input id="join-code" type="text" inputmode="text" maxlength="4" placeholder="CODE" aria-label="Match-Code" autocapitalize="characters" spellcheck="false">
+        <button class="btn" id="btn-join" type="submit">BEITRETEN</button>
+      </form>
+    </div>
+    <div id="online-code" class="code" hidden><span class="eyebrow">Dein Match-Code</span><b id="code-text">----</b></div>
+    <p class="hint" id="online-status">Bereit.</p>
+    <div class="row"><button class="btn" id="btn-back3" type="button">ZURÜCK</button></div>
+  </section>
+
+  <section id="scr-select" class="screen" hidden>
+    <h2 id="sel-title">WÄHLE DEINEN KÄMPFER</h2>
+    <div class="grid" id="grid"></div>
+    <div class="detail" id="detail"></div>
+    <div class="row">
+      <button class="btn" id="btn-back1" type="button">ZURÜCK</button>
+      <button class="btn primary" id="btn-confirm" type="button">WÄHLEN</button>
+    </div>
+  </section>
+
+  <section id="scr-stage" class="screen" hidden>
+    <h2>KULISSE WÄHLEN</h2>
+    <div class="stagegrid" id="stagegrid"></div>
+    <div class="row">
+      <button class="btn" id="btn-back2" type="button">ZURÜCK</button>
+      <button class="btn primary" id="btn-random" type="button">ZUFALL</button>
+    </div>
+  </section>
+
+  <section id="scr-result" class="screen" hidden>
+    <p class="eyebrow" id="res-eyebrow">KAMPF VORBEI</p>
+    <h1 id="res-title">GAME!</h1>
+    <p class="hint" id="res-text"></p>
+    <div class="row" id="res-btns"></div>
+  </section>
+</div>
