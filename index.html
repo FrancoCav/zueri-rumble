@@ -80,8 +80,6 @@ h2 { margin: 0; font-family: var(--font-pixel); font-size: clamp(10px, 2.6vmin, 
 #pad .btns .sp { background: rgba(255,225,77,.35); }
 #pad .btns .bl { background: rgba(63,184,255,.3); }
 #fsbtn { right: 66px !important; }
-#rotate { display: none; color: var(--hot); }
-@media (orientation: portrait) and (pointer: coarse) { #rotate { display: block; } }
 #hudbtn, #fsbtn { position: absolute; top: 8px; right: 8px; font-family: var(--font-pixel); font-size: 8px; padding: 7px 9px; background: rgba(0,0,0,.55); color: #fff; border: 1px solid rgba(255,255,255,.3); cursor: pointer; }
 label.toggle { display: inline-flex; gap: 6px; align-items: center; color: var(--dim); cursor: pointer; }
 @media (prefers-reduced-motion: reduce) { .btn:active { transform: none; } }
@@ -91,6 +89,29 @@ label.toggle { display: inline-flex; gap: 6px; align-items: center; color: var(-
 #join-code { width: 7ch; font-family: var(--font-pixel); font-size: 16px; text-transform: uppercase; text-align: center; padding: 10px 6px; background: #000; color: var(--fg); border: 3px solid var(--edge); }
 #join-code:focus-visible { outline: 3px solid var(--hot); outline-offset: 2px; }
 .rules { color: var(--fg); }
+/* phone held upright: the script turns the whole stage sideways so the game fills the long side */
+body.rot #stage { position: fixed; left: 0; top: 0; transform-origin: 0 0; transform: rotate(90deg) translateY(-100%); }
+/* flat landscape view (phones): compact menus that fit without scrolling */
+body.short .screen { padding: 8px 12px 10px; gap: 8px; }
+body.short h1 { font-size: 26px; }
+body.short .kbd { display: none; }
+body.short #scr-select { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 420px); grid-template-rows: auto minmax(0, 1fr) auto; column-gap: 10px; justify-content: center; align-items: start; }
+body.short #scr-select h2, body.short #scr-select .row { grid-column: 1 / -1; }
+body.short #scr-select .grid { grid-template-columns: repeat(4, 1fr); width: 100%; gap: 4px; }
+body.short .tile { padding: 2px 2px 3px; gap: 1px; }
+body.short .tile canvas { width: 38px; height: 38px; }
+body.short .detail { width: 100%; max-height: 100%; overflow: auto; grid-template-columns: 64px minmax(0, 1fr); padding: 8px; gap: 8px; }
+body.short .detail canvas { width: 64px; height: 64px; }
+body.short .stats, body.short .moves { font-size: 15px; }
+body.short .special { margin-top: 5px; padding: 5px 8px; font-size: 16px; }
+body.short .stagegrid { grid-template-columns: repeat(5, 1fr); width: min(100%, 780px); gap: 6px; }
+body.short .stagetile { font-size: 14px; }
+body.short .opt { display: none; }
+body.short .hint { font-size: 18px; }
+body.short .detail > div { display: flex; flex-direction: column; }
+body.short .detail .special { order: 1; margin: 2px 0 6px; }
+body.short .detail .moves { order: 2; }
+body.short .detail .stats { order: 3; margin: 6px 0 0; }
 </style>
 <div id="stage">
   <canvas id="game" width="640" height="360" role="img" aria-label="Kampfszene"></canvas>
@@ -108,7 +129,7 @@ label.toggle { display: inline-flex; gap: 6px; align-items: center; color: var(-
   </div>
 
   <section id="scr-title" class="screen" aria-labelledby="logo">
-    <p class="eyebrow">Plattform-Prügelei in fünf Zürcher Kulissen</p>
+    <p class="eyebrow opt">Plattform-Prügelei in fünf Zürcher Kulissen</p>
     <h1 id="logo">ZÜRI RUMBLE</h1>
     <p class="hint rules">Jeder Treffer treibt die Prozente hoch. Je höher sie sind, desto weiter fliegst du. Wer aus dem Bild fliegt, verliert eines von drei Leben. Kisten bringen Waffen, Powerups heilen und verstärken.</p>
     <div class="row">
@@ -116,17 +137,16 @@ label.toggle { display: inline-flex; gap: 6px; align-items: center; color: var(-
       <button class="btn" id="btn-duel" type="button">DUELL · 2 SPIELER</button>
       <button class="btn" id="btn-online" type="button">ONLINE · 2 HANDYS</button>
     </div>
-    <p class="hint">Tastatur: A/D laufen · W springen, in der Luft nochmal für den Doppelsprung · S ducken, länger halten lässt dich durch Plattformen fallen · F Schlag oder Waffe · G Tritt · H Special · R Schild. Pfeile mit J/K/L/I gehen auch.</p>
-    <p class="hint">Duell an einer Tastatur: Spieler 1 WASD + F/G/H/R · Spieler 2 Pfeile + K/L/Ö/O</p>
-    <p class="hint">Online: ein Handy eröffnet ein Match und bekommt einen Code, das andere tippt ihn ein.</p>
+    <p class="hint kbd">Tastatur: A/D laufen · W springen, in der Luft nochmal für den Doppelsprung · S ducken, länger halten lässt dich durch Plattformen fallen · F Schlag oder Waffe · G Tritt · H Special · R Schild. Pfeile mit J/K/L/I gehen auch.</p>
+    <p class="hint kbd">Duell an einer Tastatur: Spieler 1 WASD + F/G/H/R · Spieler 2 Pfeile + K/L/Ö/O</p>
+    <p class="hint opt">Online: ein Handy eröffnet ein Match und bekommt einen Code, das andere tippt ihn ein.</p>
     <p class="hint">Handy: links irgendwo aufsetzen und ziehen, dort erscheint der Joystick. Seitlich ziehen läuft, hoch ziehen springt, runter duckt. Rechts sitzen Schlag, Tritt, Schild und Special.</p>
-    <p class="hint" id="rotate">Dreh das Handy quer, dann ist das Bild gross genug.</p>
     <div class="row">
       <label class="toggle"><input type="checkbox" id="chk-pad"> Touch-Steuerung</label>
       <label class="toggle"><input type="checkbox" id="chk-sound" checked> Ton</label>
       <button class="btn" id="btn-fs" type="button">VOLLBILD</button>
     </div>
-    <p class="hint" id="fs-hint" hidden>Vollbild lässt dieser Browser hier nicht zu. Auf dem iPhone: Teilen-Menü öffnen, «Zum Home-Bildschirm» wählen und das Spiel von dort starten, dann läuft es ohne Leisten.</p>
+    <p class="hint" id="fs-hint" hidden>Hier lässt der Browser kein Vollbild per Knopf zu, auf dem iPhone geht das grundsätzlich nicht. So läuft es trotzdem ohne Leisten: 1. Diese Seite in Safari öffnen. 2. Teilen-Symbol antippen, «Zum Home-Bildschirm» wählen und «Als Web-App öffnen» eingeschaltet lassen. 3. Das Spiel über das neue Icon starten, ein älteres Icon vorher löschen. Das Spiel dreht sich selbst quer: Handy einfach quer halten, die Ausrichtungssperre darf an bleiben.</p>
   </section>
 
   <section id="scr-online" class="screen" hidden>
@@ -278,13 +298,18 @@ const sfx = {
 const joyZone = $('joyzone'), joyEl = $('joy'), joyKnob = joyEl.firstElementChild;
 const joy = { id: null, bx: 0, by: 0, up: false };
 const JOY_R = 46, JOY_DEAD = 11, JOY_FLICK = 24;
+// pointer position inside the stage; when the game is turned sideways (body.rot) the axes swap
+function stagePoint(e) {
+  const r = $('stage').getBoundingClientRect();
+  return document.body.classList.contains('rot') ? { x: e.clientY - r.top, y: r.right - e.clientX } : { x: e.clientX - r.left, y: e.clientY - r.top };
+}
 function joyDraw(kx, ky) {
   joyEl.style.transform = 'translate(' + Math.round(joy.bx) + 'px,' + Math.round(joy.by) + 'px)';
   joyKnob.style.transform = 'translate(' + Math.round(kx) + 'px,' + Math.round(ky) + 'px)';
 }
 function joyMove(e) {
-  const r = $('stage').getBoundingClientRect();
-  let dx = e.clientX - r.left - joy.bx, dy = e.clientY - r.top - joy.by;
+  const p = stagePoint(e);
+  let dx = p.x - joy.bx, dy = p.y - joy.by;
   const d = Math.hypot(dx, dy);
   if (d > JOY_R) { const k = (d - JOY_R) / d; joy.bx += dx * k; joy.by += dy * k; dx -= dx * k; dy -= dy * k; }   // the base trails a thumb that drags past the rim
   joyDraw(dx, dy);
@@ -304,8 +329,8 @@ function joyEnd(e) {
 joyZone.addEventListener('pointerdown', (e) => {
   if (joy.id !== null) return;
   e.preventDefault();
-  const r = $('stage').getBoundingClientRect();
-  joy.id = e.pointerId; joy.bx = e.clientX - r.left; joy.by = e.clientY - r.top; joy.up = false;
+  const p = stagePoint(e);
+  joy.id = e.pointerId; joy.bx = p.x; joy.by = p.y; joy.up = false;
   try { joyZone.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
   joyEl.hidden = false; joyDraw(0, 0);
 });
@@ -313,10 +338,13 @@ joyZone.addEventListener('pointermove', (e) => { if (e.pointerId === joy.id) { e
 joyZone.addEventListener('pointerup', joyEnd); joyZone.addEventListener('pointercancel', joyEnd); joyZone.addEventListener('lostpointercapture', joyEnd);
 joyZone.addEventListener('contextmenu', (e) => e.preventDefault());
 
-// ---- fullscreen, where the browser offers it; the hint explains the home-screen route for iPhones ----
+// ---- fullscreen. Android and desktop browsers switch on request. iPhones cannot: there the game runs
+//      without browser bars only when started from the home screen, so the button explains that route ----
 const fsRoot = document.documentElement;
 const fsReq = fsRoot.requestFullscreen || fsRoot.webkitRequestFullscreen, fsExit = document.exitFullscreen || document.webkitExitFullscreen;
 const fsOn = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+const mm = (q) => !!(window.matchMedia && window.matchMedia(q).matches);
+const standalone = !!navigator.standalone || mm('(display-mode: standalone)') || mm('(display-mode: fullscreen)');
 function toggleFs() {
   const fail = () => { $('fs-hint').hidden = false; };
   if (!fsReq) { fail(); return; }
@@ -329,7 +357,8 @@ function toggleFs() {
 }
 $('btn-fs').addEventListener('click', toggleFs);
 $('fsbtn').addEventListener('click', toggleFs);
-const fsLabel = () => { const t = fsOn() ? 'VOLLBILD AUS' : 'VOLLBILD'; $('btn-fs').textContent = t; $('fsbtn').textContent = fsOn() ? 'FENSTER' : 'VOLLBILD'; resize(); };
+if (standalone) $('btn-fs').hidden = true; else if (!fsReq) $('btn-fs').textContent = 'VOLLBILD: SO GEHT ES';
+const fsLabel = () => { $('btn-fs').textContent = fsOn() ? 'VOLLBILD AUS' : 'VOLLBILD'; $('fsbtn').textContent = fsOn() ? 'FENSTER' : 'VOLLBILD'; resize(); };
 document.addEventListener('fullscreenchange', fsLabel); document.addEventListener('webkitfullscreenchange', fsLabel);
 
 
@@ -1468,7 +1497,7 @@ if (padOn === null) padOn = !!(window.matchMedia && window.matchMedia('(pointer:
 function show(name) {
   app.screen = name;
   for (const k in screens) screens[k].hidden = k !== name;
-  $('hudbtn').hidden = name !== 'fight'; $('fsbtn').hidden = name !== 'fight'; pad.hidden = !(name === 'fight' && padOn); joyZone.hidden = pad.hidden; joyEnd();
+  $('hudbtn').hidden = name !== 'fight'; $('fsbtn').hidden = name !== 'fight' || !fsReq || standalone; pad.hidden = !(name === 'fight' && padOn); joyZone.hidden = pad.hidden; joyEnd();
   held.p1 = {}; held.p2 = {}; pressed.p1 = {}; pressed.p2 = {};
 }
 const sel = { who: 1, idx: 0 };
@@ -1699,7 +1728,13 @@ $('btn-back3').addEventListener('click', () => { netLeave(); show('title'); });
 
 // ---- sizing and the main loop (fixed 60 Hz simulation) ----
 function resize() {
-  const r = $('stage').getBoundingClientRect(); let s = Math.min(r.width / VW, r.height / VH);
+  const st = $('stage'), touch = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+  const rot = touch && window.innerHeight > window.innerWidth * 1.15;      // phone held upright: turn the game so it fills the long side
+  document.body.classList.toggle('rot', rot);
+  st.style.width = rot ? window.innerHeight + 'px' : ''; st.style.height = rot ? window.innerWidth + 'px' : '';
+  const w = st.clientWidth, h = st.clientHeight;
+  document.body.classList.toggle('short', h < 480);
+  let s = Math.min(w / VW, h / VH);
   if (s >= 2) s = Math.floor(s); if (!(s > 0)) s = 1;
   canvas.style.width = Math.floor(VW * s) + 'px'; canvas.style.height = Math.floor(VH * s) + 'px';
 }
@@ -1720,6 +1755,7 @@ function frame(now) {
   if (app.screen === 'fight' && match) renderFight(app.t); else renderTitle(app.t);
 }
 window.addEventListener('resize', resize);
+window.addEventListener('orientationchange', () => setTimeout(resize, 250));
 if (document.fonts && document.fonts.load) document.fonts.load('8px "Press Start 2P"').catch(() => {});
 resize(); renderSelect(); show('title'); requestAnimationFrame(frame);
 

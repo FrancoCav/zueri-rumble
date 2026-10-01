@@ -25,9 +25,12 @@ Spielen: https://francocav.github.io/zueri-rumble/
 - Links irgendwo aufsetzen: dort erscheint der Joystick. Seitlich ziehen läuft (weiter ziehen = schneller), hoch ziehen springt,
   nochmal hoch ziehen gibt den Doppelsprung, runter ziehen duckt oder lässt durch Plattformen fallen.
 - Rechts unten sitzen vier Knöpfe: Schlag, Tritt, Schild, Special.
-- Vollbild: Knopf «VOLLBILD» im Menü oder oben rechts im Kampf (Android und PC). Das Bild wird dabei quer gesperrt.
-- iPhone: Safari erlaubt kein Vollbild per Knopf. Stattdessen Teilen-Menü öffnen, «Zum Home-Bildschirm» wählen und das Spiel
-  von dort starten, dann läuft es ohne Browser-Leisten.
+- Hochkant gehalten dreht sich das Spiel selbst um 90 Grad und füllt die lange Seite. Handy einfach quer halten
+  (Oberkante nach links), die Ausrichtungssperre darf an bleiben.
+- Vollbild auf Android und am PC: Knopf «VOLLBILD» im Menü oder oben rechts im Kampf.
+- iPhone: Safari kann kein Vollbild per Knopf. Ohne Browser-Leisten läuft das Spiel als Web-App vom Home-Bildschirm:
+  in Safari öffnen, Teilen-Symbol, «Zum Home-Bildschirm», «Als Web-App öffnen» eingeschaltet lassen, dann über das Icon starten.
+  Ein älteres Icon vorher löschen. Uhrzeit und Akku-Anzeige blendet iOS im Hochformat immer ein.
 
 ## Modi
 - Arcade: fünf CPU-Gegner in Folge, jeder schlauer als der vorige.

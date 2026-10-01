@@ -4,13 +4,18 @@
 const joyZone = $('joyzone'), joyEl = $('joy'), joyKnob = joyEl.firstElementChild;
 const joy = { id: null, bx: 0, by: 0, up: false };
 const JOY_R = 46, JOY_DEAD = 11, JOY_FLICK = 24;
+// pointer position inside the stage; when the game is turned sideways (body.rot) the axes swap
+function stagePoint(e) {
+  const r = $('stage').getBoundingClientRect();
+  return document.body.classList.contains('rot') ? { x: e.clientY - r.top, y: r.right - e.clientX } : { x: e.clientX - r.left, y: e.clientY - r.top };
+}
 function joyDraw(kx, ky) {
   joyEl.style.transform = 'translate(' + Math.round(joy.bx) + 'px,' + Math.round(joy.by) + 'px)';
   joyKnob.style.transform = 'translate(' + Math.round(kx) + 'px,' + Math.round(ky) + 'px)';
 }
 function joyMove(e) {
-  const r = $('stage').getBoundingClientRect();
-  let dx = e.clientX - r.left - joy.bx, dy = e.clientY - r.top - joy.by;
+  const p = stagePoint(e);
+  let dx = p.x - joy.bx, dy = p.y - joy.by;
   const d = Math.hypot(dx, dy);
   if (d > JOY_R) { const k = (d - JOY_R) / d; joy.bx += dx * k; joy.by += dy * k; dx -= dx * k; dy -= dy * k; }   // the base trails a thumb that drags past the rim
   joyDraw(dx, dy);
@@ -30,8 +35,8 @@ function joyEnd(e) {
 joyZone.addEventListener('pointerdown', (e) => {
   if (joy.id !== null) return;
   e.preventDefault();
-  const r = $('stage').getBoundingClientRect();
-  joy.id = e.pointerId; joy.bx = e.clientX - r.left; joy.by = e.clientY - r.top; joy.up = false;
+  const p = stagePoint(e);
+  joy.id = e.pointerId; joy.bx = p.x; joy.by = p.y; joy.up = false;
   try { joyZone.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
   joyEl.hidden = false; joyDraw(0, 0);
 });
@@ -39,10 +44,13 @@ joyZone.addEventListener('pointermove', (e) => { if (e.pointerId === joy.id) { e
 joyZone.addEventListener('pointerup', joyEnd); joyZone.addEventListener('pointercancel', joyEnd); joyZone.addEventListener('lostpointercapture', joyEnd);
 joyZone.addEventListener('contextmenu', (e) => e.preventDefault());
 
-// ---- fullscreen, where the browser offers it; the hint explains the home-screen route for iPhones ----
+// ---- fullscreen. Android and desktop browsers switch on request. iPhones cannot: there the game runs
+//      without browser bars only when started from the home screen, so the button explains that route ----
 const fsRoot = document.documentElement;
 const fsReq = fsRoot.requestFullscreen || fsRoot.webkitRequestFullscreen, fsExit = document.exitFullscreen || document.webkitExitFullscreen;
 const fsOn = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+const mm = (q) => !!(window.matchMedia && window.matchMedia(q).matches);
+const standalone = !!navigator.standalone || mm('(display-mode: standalone)') || mm('(display-mode: fullscreen)');
 function toggleFs() {
   const fail = () => { $('fs-hint').hidden = false; };
   if (!fsReq) { fail(); return; }
@@ -55,5 +63,6 @@ function toggleFs() {
 }
 $('btn-fs').addEventListener('click', toggleFs);
 $('fsbtn').addEventListener('click', toggleFs);
-const fsLabel = () => { const t = fsOn() ? 'VOLLBILD AUS' : 'VOLLBILD'; $('btn-fs').textContent = t; $('fsbtn').textContent = fsOn() ? 'FENSTER' : 'VOLLBILD'; resize(); };
+if (standalone) $('btn-fs').hidden = true; else if (!fsReq) $('btn-fs').textContent = 'VOLLBILD: SO GEHT ES';
+const fsLabel = () => { $('btn-fs').textContent = fsOn() ? 'VOLLBILD AUS' : 'VOLLBILD'; $('fsbtn').textContent = fsOn() ? 'FENSTER' : 'VOLLBILD'; resize(); };
 document.addEventListener('fullscreenchange', fsLabel); document.addEventListener('webkitfullscreenchange', fsLabel);

@@ -57,8 +57,6 @@ h2 { margin: 0; font-family: var(--font-pixel); font-size: clamp(10px, 2.6vmin, 
 #pad .btns .sp { background: rgba(255,225,77,.35); }
 #pad .btns .bl { background: rgba(63,184,255,.3); }
 #fsbtn { right: 66px !important; }
-#rotate { display: none; color: var(--hot); }
-@media (orientation: portrait) and (pointer: coarse) { #rotate { display: block; } }
 #hudbtn, #fsbtn { position: absolute; top: 8px; right: 8px; font-family: var(--font-pixel); font-size: 8px; padding: 7px 9px; background: rgba(0,0,0,.55); color: #fff; border: 1px solid rgba(255,255,255,.3); cursor: pointer; }
 label.toggle { display: inline-flex; gap: 6px; align-items: center; color: var(--dim); cursor: pointer; }
 @media (prefers-reduced-motion: reduce) { .btn:active { transform: none; } }
@@ -68,3 +66,26 @@ label.toggle { display: inline-flex; gap: 6px; align-items: center; color: var(-
 #join-code { width: 7ch; font-family: var(--font-pixel); font-size: 16px; text-transform: uppercase; text-align: center; padding: 10px 6px; background: #000; color: var(--fg); border: 3px solid var(--edge); }
 #join-code:focus-visible { outline: 3px solid var(--hot); outline-offset: 2px; }
 .rules { color: var(--fg); }
+/* phone held upright: the script turns the whole stage sideways so the game fills the long side */
+body.rot #stage { position: fixed; left: 0; top: 0; transform-origin: 0 0; transform: rotate(90deg) translateY(-100%); }
+/* flat landscape view (phones): compact menus that fit without scrolling */
+body.short .screen { padding: 8px 12px 10px; gap: 8px; }
+body.short h1 { font-size: 26px; }
+body.short .kbd { display: none; }
+body.short #scr-select { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 420px); grid-template-rows: auto minmax(0, 1fr) auto; column-gap: 10px; justify-content: center; align-items: start; }
+body.short #scr-select h2, body.short #scr-select .row { grid-column: 1 / -1; }
+body.short #scr-select .grid { grid-template-columns: repeat(4, 1fr); width: 100%; gap: 4px; }
+body.short .tile { padding: 2px 2px 3px; gap: 1px; }
+body.short .tile canvas { width: 38px; height: 38px; }
+body.short .detail { width: 100%; max-height: 100%; overflow: auto; grid-template-columns: 64px minmax(0, 1fr); padding: 8px; gap: 8px; }
+body.short .detail canvas { width: 64px; height: 64px; }
+body.short .stats, body.short .moves { font-size: 15px; }
+body.short .special { margin-top: 5px; padding: 5px 8px; font-size: 16px; }
+body.short .stagegrid { grid-template-columns: repeat(5, 1fr); width: min(100%, 780px); gap: 6px; }
+body.short .stagetile { font-size: 14px; }
+body.short .opt { display: none; }
+body.short .hint { font-size: 18px; }
+body.short .detail > div { display: flex; flex-direction: column; }
+body.short .detail .special { order: 1; margin: 2px 0 6px; }
+body.short .detail .moves { order: 2; }
+body.short .detail .stats { order: 3; margin: 6px 0 0; }

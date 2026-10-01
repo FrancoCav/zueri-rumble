@@ -6,7 +6,7 @@ if (padOn === null) padOn = !!(window.matchMedia && window.matchMedia('(pointer:
 function show(name) {
   app.screen = name;
   for (const k in screens) screens[k].hidden = k !== name;
-  $('hudbtn').hidden = name !== 'fight'; $('fsbtn').hidden = name !== 'fight'; pad.hidden = !(name === 'fight' && padOn); joyZone.hidden = pad.hidden; joyEnd();
+  $('hudbtn').hidden = name !== 'fight'; $('fsbtn').hidden = name !== 'fight' || !fsReq || standalone; pad.hidden = !(name === 'fight' && padOn); joyZone.hidden = pad.hidden; joyEnd();
   held.p1 = {}; held.p2 = {}; pressed.p1 = {}; pressed.p2 = {};
 }
 const sel = { who: 1, idx: 0 };
