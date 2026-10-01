@@ -9,7 +9,8 @@ function stepFighter(f, o, H, Pd) {
   for (const k in f.buff) if (--f.buff[k] <= 0) delete f.buff[k];
   f.meter = Math.min(100, f.meter + 0.05);
   if (f.state !== 'shield') f.shield = Math.min(100, f.shield + 0.25);
-  const maxV = 1.9 * f.def.st.spd * (f.buff.speed ? 1.4 : 1), dir = (H.right ? 1 : 0) - (H.left ? 1 : 0), onG = !!f.ground;
+  const tilt = typeof H.ax === 'number' && H.ax ? clamp(Math.abs(H.ax) * 1.25, 0.45, 1) : 1;         // joystick: a small tilt walks slowly
+  const maxV = 1.9 * f.def.st.spd * (f.buff.speed ? 1.4 : 1) * tilt, dir = (H.right ? 1 : 0) - (H.left ? 1 : 0), onG = !!f.ground;
   const free = f.state === 'idle' || f.state === 'walk' || f.state === 'crouch' || f.state === 'jump';
   if (free) {
     if (dir) f.face = dir;

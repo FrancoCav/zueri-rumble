@@ -9,7 +9,7 @@ function netDrop(msg) { if (!net.role) return; netReset(); app.mode = 'arcade'; 
 function netMessage(m) {
   if (!m || typeof m !== 'object') return;
   switch (m.t) {
-    case 'in': if (net.role === 'host') { net.remoteHeld = fromBits(m.h | 0); Object.assign(net.remotePressed, fromBits(m.p | 0)); } break;
+    case 'in': if (net.role === 'host') { net.remoteHeld = fromBits(m.h | 0); if (m.x) net.remoteHeld.ax = clamp((m.x | 0) / 100, -1, 1); Object.assign(net.remotePressed, fromBits(m.p | 0)); } break;
     case 'pick': net.theirPick = clamp(m.f | 0, 0, FIGHTERS.length - 1); if (net.role === 'host') netMaybeStart(); break;
     case 'start':
       if (net.role === 'guest') {

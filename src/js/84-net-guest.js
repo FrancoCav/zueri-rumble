@@ -10,7 +10,7 @@ function applyFighter(f, a) {
   f.tumble = !!a[17]; f.vx = num(a[18]); f.fired = !!a[19]; f.kos = a[20] | 0;
 }
 function netGuestStep() {
-  netSend({ t: 'in', h: toBits(held.p1), p: toBits(pressed.p1) }); pressed.p1 = {};
+  netSend({ t: 'in', h: toBits(held.p1), p: toBits(pressed.p1), x: Math.round((held.p1.ax || 0) * 100) }); pressed.p1 = {};
   const s = net.lastState, M = match;
   if (s) {
     net.lastState = null;

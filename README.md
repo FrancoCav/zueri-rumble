@@ -21,6 +21,14 @@ Spielen: https://francocav.github.io/zueri-rumble/
 - Techniken: Schlag, Runter + Schlag, Tritt, Runter + Tritt. Alle gehen auch in der Luft.
 - Wer weggeschleudert wurde, hat einen zusätzlichen Rettungssprung.
 
+## Handy
+- Links irgendwo aufsetzen: dort erscheint der Joystick. Seitlich ziehen läuft (weiter ziehen = schneller), hoch ziehen springt,
+  nochmal hoch ziehen gibt den Doppelsprung, runter ziehen duckt oder lässt durch Plattformen fallen.
+- Rechts unten sitzen vier Knöpfe: Schlag, Tritt, Schild, Special.
+- Vollbild: Knopf «VOLLBILD» im Menü oder oben rechts im Kampf (Android und PC). Das Bild wird dabei quer gesperrt.
+- iPhone: Safari erlaubt kein Vollbild per Knopf. Stattdessen Teilen-Menü öffnen, «Zum Home-Bildschirm» wählen und das Spiel
+  von dort starten, dann läuft es ohne Browser-Leisten.
+
 ## Modi
 - Arcade: fünf CPU-Gegner in Folge, jeder schlauer als der vorige.
 - Duell: zwei Spieler an einer Tastatur.

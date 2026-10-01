@@ -46,15 +46,20 @@ h2 { margin: 0; font-family: var(--font-pixel); font-size: clamp(10px, 2.6vmin, 
 .stagetile { border: 2px solid var(--edge); background: var(--panel); padding: 4px; cursor: pointer; color: var(--fg); font-family: var(--font-text); font-size: 17px; display: grid; gap: 4px; justify-items: center; }
 .stagetile canvas { width: 100%; image-rendering: pixelated; aspect-ratio: 16 / 9; }
 .stagetile:hover { border-color: var(--hot); }
-#pad { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 10px calc(10px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-between; align-items: flex-end; pointer-events: none; }
-#pad button { pointer-events: auto; width: 54px; height: 54px; border-radius: 50%; border: 2px solid rgba(255,255,255,.35); background: rgba(20,20,40,.55); color: #fff; font-family: var(--font-pixel); font-size: 8px; touch-action: none; padding: 0; }
+#pad { position: absolute; right: 0; bottom: 0; padding: 0 calc(12px + env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) 0; pointer-events: none; }
+#pad button { pointer-events: auto; width: 66px; height: 66px; border-radius: 50%; border: 2px solid rgba(255,255,255,.35); background: rgba(20,20,40,.55); color: #fff; font-family: var(--font-pixel); font-size: 8px; touch-action: none; padding: 0; }
 #pad button.on { background: rgba(255,159,28,.75); }
-#pad .dpad { display: grid; grid-template-columns: repeat(3, 54px); grid-template-rows: repeat(3, 54px); gap: 4px; }
-#pad .up { grid-column: 2; grid-row: 1; } #pad .left { grid-column: 1; grid-row: 2; } #pad .right { grid-column: 3; grid-row: 2; } #pad .down { grid-column: 2; grid-row: 3; }
-#pad .btns { display: grid; grid-template-columns: repeat(2, 58px); gap: 6px; }
+#joyzone { position: absolute; left: 0; top: 0; bottom: 0; width: 50%; touch-action: none; }
+#joy { position: absolute; left: 0; top: 0; width: 112px; height: 112px; margin: -56px 0 0 -56px; border-radius: 50%; border: 2px solid rgba(255,255,255,.4); background: rgba(20,20,40,.35); pointer-events: none; }
+#joy i { position: absolute; left: 50%; top: 50%; width: 52px; height: 52px; margin: -26px 0 0 -26px; border-radius: 50%; background: rgba(255,159,28,.8); border: 2px solid rgba(255,255,255,.7); }
+#pad .btns { display: grid; grid-template-columns: repeat(2, 66px); gap: 8px; }
+#pad .btns .pu { background: rgba(255,159,28,.45); }
 #pad .btns .sp { background: rgba(255,225,77,.35); }
 #pad .btns .bl { background: rgba(63,184,255,.3); }
-#hudbtn { position: absolute; top: 8px; right: 8px; font-family: var(--font-pixel); font-size: 8px; padding: 7px 9px; background: rgba(0,0,0,.55); color: #fff; border: 1px solid rgba(255,255,255,.3); cursor: pointer; }
+#fsbtn { right: 66px !important; }
+#rotate { display: none; color: var(--hot); }
+@media (orientation: portrait) and (pointer: coarse) { #rotate { display: block; } }
+#hudbtn, #fsbtn { position: absolute; top: 8px; right: 8px; font-family: var(--font-pixel); font-size: 8px; padding: 7px 9px; background: rgba(0,0,0,.55); color: #fff; border: 1px solid rgba(255,255,255,.3); cursor: pointer; }
 label.toggle { display: inline-flex; gap: 6px; align-items: center; color: var(--dim); cursor: pointer; }
 @media (prefers-reduced-motion: reduce) { .btn:active { transform: none; } }
 .code { display: grid; justify-items: center; gap: 6px; padding: 14px 26px; border: 3px solid var(--hot); background: #2a2205; }

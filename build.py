@@ -13,17 +13,27 @@ js = '\n'.join(io.open(p, encoding='utf-8').read() for p in sorted(glob.glob(os.
 debug = '--debug' in sys.argv
 if debug:
     js += ("\nwindow.__zr = { get match() { return match; }, stepMatch, app, show, newMatch, startFight, FIGHTERS, STAGES, WEAPONS, POWERUPS, SP, MV, "
-           "held, pressed, renderFight, net, netHost, netJoin, netSnapshot, netGuestStep, sel, renderSelect, items, projs, fx, takePower, breakCrate, Fighter, applyHit, stepFighter, cpuInput, BLAST, playFx, get fxq() { return fxq; } };")
+           "held, pressed, renderFight, net, netHost, netJoin, netSnapshot, netGuestStep, sel, renderSelect, items, projs, fx, takePower, breakCrate, Fighter, "
+           "applyHit, stepFighter, cpuInput, BLAST, playFx, get fxq() { return fxq; }, joy, toggleFs };")
 TITLE = '<title>Züri Rumble</title>\n'
 LINKS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap">\n'
          '<script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.5/peerjs.min.js"></script>\n')
+# installed to the home screen, the game opens without browser bars (the only fullscreen route on iPhones)
+APP = ('<meta name="mobile-web-app-capable" content="yes">\n'
+       '<meta name="apple-mobile-web-app-capable" content="yes">\n'
+       '<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">\n'
+       '<meta name="apple-mobile-web-app-title" content="Züri Rumble">\n'
+       '<meta name="theme-color" content="#07070f">\n'
+       '<link rel="manifest" href="manifest.webmanifest">\n'
+       '<link rel="apple-touch-icon" href="icon-180.png">\n'
+       '<link rel="icon" href="icon-192.png">\n')
 content = LINKS + '<style>\n' + css + '</style>\n' + body + "\n<script>\n(() => {\n'use strict';\n" + js + '\n})();\n</script>\n'
 full = ('<!doctype html>\n<html lang="de">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
         '<meta name="description" content="Züri Rumble: Plattform-Prügelspiel mit 16 Kämpfern, Waffen und Powerups in fünf Zürcher Kulissen, für PC und Handy, mit Online-Duell.">\n'
-        + TITLE +
+        + APP + TITLE +
         '<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}</style>\n'
         '</head>\n<body>\n' + content + '</body>\n</html>\n')
 out = 'index.html'
