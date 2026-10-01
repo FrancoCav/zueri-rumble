@@ -31,7 +31,7 @@ APP = ('<meta name="mobile-web-app-capable" content="yes">\n'
        '<link rel="icon" href="icon-192.png">\n')
 content = LINKS + '<style>\n' + css + '</style>\n' + body + "\n<script>\n(() => {\n'use strict';\n" + js + '\n})();\n</script>\n'
 full = ('<!doctype html>\n<html lang="de">\n<head>\n<meta charset="utf-8">\n'
-        '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
+        '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">\n'
         '<meta name="description" content="Züri Rumble: Plattform-Prügelspiel mit 16 Kämpfern, Waffen und Powerups in fünf Zürcher Kulissen, für PC und Handy, mit Online-Duell.">\n'
         + APP + TITLE +
         '<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}</style>\n'

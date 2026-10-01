@@ -66,3 +66,22 @@ $('fsbtn').addEventListener('click', toggleFs);
 if (standalone) $('btn-fs').hidden = true; else if (!fsReq) $('btn-fs').textContent = 'VOLLBILD: SO GEHT ES';
 const fsLabel = () => { $('btn-fs').textContent = fsOn() ? 'VOLLBILD AUS' : 'VOLLBILD'; $('fsbtn').textContent = fsOn() ? 'FENSTER' : 'VOLLBILD'; resize(); };
 document.addEventListener('fullscreenchange', fsLabel); document.addEventListener('webkitfullscreenchange', fsLabel);
+
+// ---- no zooming: a double tap or a pinch must never magnify the game (iOS would leave it stuck zoomed in) ----
+const VIEWPORT = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover';
+const vpMeta = document.querySelector('meta[name="viewport"]');
+if (vpMeta) vpMeta.setAttribute('content', VIEWPORT);
+let lastTap = { t: 0, x: 0, y: 0 };
+document.addEventListener('touchend', (e) => {
+  const c = e.changedTouches && e.changedTouches[0], x = c ? c.clientX : 0, y = c ? c.clientY : 0, now = Date.now();
+  const twice = now - lastTap.t < 400 && Math.hypot(x - lastTap.x, y - lastTap.y) < 40;                // same spot, quickly: a double tap
+  lastTap = { t: now, x, y };
+  if (twice && e.cancelable && !(e.target && e.target.closest && e.target.closest('input'))) e.preventDefault();
+}, { passive: false });
+document.addEventListener('touchmove', (e) => { if (e.touches && e.touches.length > 1 && e.cancelable) e.preventDefault(); }, { passive: false });   // pinch
+for (const g of ['gesturestart', 'gesturechange', 'gestureend']) document.addEventListener(g, (e) => e.preventDefault(), { passive: false });       // iOS pinch events
+document.addEventListener('dblclick', (e) => e.preventDefault(), { passive: false });
+// if the view ever ends up magnified anyway, snap it back
+if (window.visualViewport) window.visualViewport.addEventListener('resize', () => {
+  if (window.visualViewport.scale > 1.02 && vpMeta) { vpMeta.setAttribute('content', VIEWPORT + ', minimum-scale=1'); setTimeout(() => vpMeta.setAttribute('content', VIEWPORT), 60); }
+});

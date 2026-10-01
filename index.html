@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="description" content="Züri Rumble: Plattform-Prügelspiel mit 16 Kämpfern, Waffen und Powerups in fünf Zürcher Kulissen, für PC und Handy, mit Online-Duell.">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -32,8 +32,11 @@
 html, body { height: 100%; }
 html { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-text); font-size: 20px; line-height: 1.2; overflow: hidden; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
-#stage { position: relative; height: 100%; min-height: 320px; display: grid; place-items: center; background: #000; overflow: hidden; touch-action: none; }
-#game { display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
+#stage { position: relative; height: 100%; min-height: 320px; display: grid; place-items: center; background: #000; overflow: hidden; touch-action: pan-x pan-y; }
+#game { display: block; image-rendering: pixelated; image-rendering: crisp-edges; touch-action: none; }
+/* panning stays possible inside the menus, zooming is off everywhere */
+html, body { touch-action: pan-x pan-y; -webkit-touch-callout: none; -webkit-text-size-adjust: 100%; }
+.screen, .screen * { touch-action: pan-x pan-y; }
 .screen { position: absolute; inset: 0; overflow: auto; padding: 18px 16px 28px; box-sizing: border-box; background: rgba(5,5,14,.9); display: flex; flex-direction: column; align-items: center; gap: 14px; }
 h1 { margin: 0; font-family: var(--font-pixel); font-size: clamp(22px, 6vmin, 44px); line-height: 1.15; color: var(--hot); text-shadow: 3px 3px 0 #b3261e, 6px 6px 0 #2a0a08; text-align: center; letter-spacing: .02em; text-wrap: balance; }
 h2 { margin: 0; font-family: var(--font-pixel); font-size: clamp(10px, 2.6vmin, 14px); line-height: 1.5; color: var(--p1); text-align: center; text-wrap: balance; }
@@ -360,6 +363,25 @@ $('fsbtn').addEventListener('click', toggleFs);
 if (standalone) $('btn-fs').hidden = true; else if (!fsReq) $('btn-fs').textContent = 'VOLLBILD: SO GEHT ES';
 const fsLabel = () => { $('btn-fs').textContent = fsOn() ? 'VOLLBILD AUS' : 'VOLLBILD'; $('fsbtn').textContent = fsOn() ? 'FENSTER' : 'VOLLBILD'; resize(); };
 document.addEventListener('fullscreenchange', fsLabel); document.addEventListener('webkitfullscreenchange', fsLabel);
+
+// ---- no zooming: a double tap or a pinch must never magnify the game (iOS would leave it stuck zoomed in) ----
+const VIEWPORT = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover';
+const vpMeta = document.querySelector('meta[name="viewport"]');
+if (vpMeta) vpMeta.setAttribute('content', VIEWPORT);
+let lastTap = { t: 0, x: 0, y: 0 };
+document.addEventListener('touchend', (e) => {
+  const c = e.changedTouches && e.changedTouches[0], x = c ? c.clientX : 0, y = c ? c.clientY : 0, now = Date.now();
+  const twice = now - lastTap.t < 400 && Math.hypot(x - lastTap.x, y - lastTap.y) < 40;                // same spot, quickly: a double tap
+  lastTap = { t: now, x, y };
+  if (twice && e.cancelable && !(e.target && e.target.closest && e.target.closest('input'))) e.preventDefault();
+}, { passive: false });
+document.addEventListener('touchmove', (e) => { if (e.touches && e.touches.length > 1 && e.cancelable) e.preventDefault(); }, { passive: false });   // pinch
+for (const g of ['gesturestart', 'gesturechange', 'gestureend']) document.addEventListener(g, (e) => e.preventDefault(), { passive: false });       // iOS pinch events
+document.addEventListener('dblclick', (e) => e.preventDefault(), { passive: false });
+// if the view ever ends up magnified anyway, snap it back
+if (window.visualViewport) window.visualViewport.addEventListener('resize', () => {
+  if (window.visualViewport.scale > 1.02 && vpMeta) { vpMeta.setAttribute('content', VIEWPORT + ', minimum-scale=1'); setTimeout(() => vpMeta.setAttribute('content', VIEWPORT), 60); }
+});
 
 
 // ---- move templates. s startup, a active, r recovery (frames); d damage in %; hb hitbox [x, y, w, h] from the feet, facing right;

@@ -9,8 +9,11 @@
 html, body { height: 100%; }
 html { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-text); font-size: 20px; line-height: 1.2; overflow: hidden; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
-#stage { position: relative; height: 100%; min-height: 320px; display: grid; place-items: center; background: #000; overflow: hidden; touch-action: none; }
-#game { display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
+#stage { position: relative; height: 100%; min-height: 320px; display: grid; place-items: center; background: #000; overflow: hidden; touch-action: pan-x pan-y; }
+#game { display: block; image-rendering: pixelated; image-rendering: crisp-edges; touch-action: none; }
+/* panning stays possible inside the menus, zooming is off everywhere */
+html, body { touch-action: pan-x pan-y; -webkit-touch-callout: none; -webkit-text-size-adjust: 100%; }
+.screen, .screen * { touch-action: pan-x pan-y; }
 .screen { position: absolute; inset: 0; overflow: auto; padding: 18px 16px 28px; box-sizing: border-box; background: rgba(5,5,14,.9); display: flex; flex-direction: column; align-items: center; gap: 14px; }
 h1 { margin: 0; font-family: var(--font-pixel); font-size: clamp(22px, 6vmin, 44px); line-height: 1.15; color: var(--hot); text-shadow: 3px 3px 0 #b3261e, 6px 6px 0 #2a0a08; text-align: center; letter-spacing: .02em; text-wrap: balance; }
 h2 { margin: 0; font-family: var(--font-pixel); font-size: clamp(10px, 2.6vmin, 14px); line-height: 1.5; color: var(--p1); text-align: center; text-wrap: balance; }
